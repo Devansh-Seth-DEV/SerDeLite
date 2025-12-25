@@ -3,6 +3,10 @@
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)
 ![Compiler](https://img.shields.io/badge/compiler-GCC%20%2F%20Clang-orange.svg)
 
+<p align="center">
+  <img src="serdelite_logo.png" alt="SerDeLite Logo" width="600">
+</p>
+
 ## ⚖️ License
 SerDeLite is licensed under the **MIT License**. Full details are available in the `LICENSE` file.
 
