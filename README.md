@@ -128,6 +128,11 @@ public:
                s.writeFloat(health);
     }
 
+    bool fromByteStream(ByteStream& s) override {
+        return s.readUint32(id) && 
+               s.readFloat(health);
+    }
+
     size_t byteSize() const override {
       return sizeof(id) + sizeof(health);
     }
@@ -188,3 +193,4 @@ if (!success) printf("Failed to serialize player to Json!");
 else jStream.getJson().printPretty();
 
 ```
+
