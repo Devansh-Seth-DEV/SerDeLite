@@ -1,5 +1,5 @@
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
-![License](https://img.shields.io/badge/license-MIT-green.svg)
+![License](https://img.shields.io/badge/license-GPL--3.0-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)
 ![Compiler](https://img.shields.io/badge/compiler-GCC%20%2F%20Clang-orange.svg)
 
@@ -7,8 +7,13 @@
   <img src="serdelite_logo.png" alt="SerDeLite Logo" width="200">
 </p>
 
-## ⚖️ License
-SerDeLite is licensed under the **MIT License**. Full details are available in the `LICENSE` file.
+## ⚖️ License & Copyright
+Copyright (c) 2025 **Devansh Seth**.
+
+SerDeLite is licensed under the **GNU General Public License v3.0 (GPL-3.0)**. 
+This ensures the software remains free and open-source. If you use this library in your own project, your project must also be released under a compatible open-source license, and you must provide clear attribution to the original author.
+
+---
 
 # SerDeLite 🚀
 
@@ -181,4 +186,5 @@ JsonStream jStream(buffer);
 bool success = p.toJson(jStream);
 if (!success) printf("Failed to serialize player to Json!");
 else jStream.getJson().printPretty();
+
 ```
