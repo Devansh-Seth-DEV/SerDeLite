@@ -72,6 +72,19 @@ Pre-compiled binaries for Windows x64 are available for immediate use.
    ```bash
    -L./bin -lserdelite
 
+
+#### 💻 Full Compilation Example
+To compile a project using the pre-compiled SerDeLite library, use the following g++ command structure:
+```bash
+g++ main.cpp -o my_app.exe -I./include -L./bin -lserdelite
+```
+Breakdown of Flags:
+- **main.cpp**: Your application source code.
+- **-I./include**: Tells the compiler where to find the serdelite.h header file.
+- **-L./bin**: Tells the linker where the libserdelite.a file is stored.
+- **-lserdelite**: Links the actual library (Note: the lib prefix and .a extension are omitted here).
+
+
 ### Build from Source
 If a custom build is required, the library can be compiled directly from the source code using the following commands:
 
