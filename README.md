@@ -4,7 +4,7 @@
 ![Compiler](https://img.shields.io/badge/compiler-GCC%20%2F%20Clang-orange.svg)
 
 <p align="center">
-  <img src="serdelite_logo.png" alt="SerDeLite Logo" width="600">
+  <img src="serdelite_logo.png" alt="SerDeLite Logo" width="200">
 </p>
 
 ## ⚖️ License
