@@ -165,8 +165,7 @@ if (!success) printf("Failed to serialize Player!\n");
 // Reset the read cursor first
 stream.resetReadCusror();
 
-if (stream.isSerdeliteBuffer() &&
-    stream.verifyLibraryHeader()) {
+if (stream.verifyLibraryHeader()) {
    buffer.dump();
 
    Player p2;
