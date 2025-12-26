@@ -1,43 +1,39 @@
-![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Devansh-Seth-DEV/SerDeLite?label=version&color=blue)
-![License](https://img.shields.io/badge/license-GPL--3.0-orange.svg)
-![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)
-![Compiler](https://img.shields.io/badge/compiler-GCC%20%2F%20Clang-orange.svg)
+<h1 align="center">
+  <img src="serdelite_logo.png" alt="SerDeLite Logo" width="200">
+</h1>
 
 <p align="center">
-  <img src="serdelite_logo.png" alt="SerDeLite Logo" width="200">
+  <img src="https://img.shields.io/github/v/tag/Devansh-Seth-DEV/SerDeLite?label=version&color=blue" alt="Version">
+  <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg" alt="Platform">
+  <img src="https://img.shields.io/badge/license-GPL--3.0-orange.svg" alt="License">
+  <img src="https://img.shields.io/github/downloads/Devansh-Seth-DEV/SerDeLite/total?color=brightgreen&logo=github" alt="Downloads">
+  <img src="https://img.shields.io/github/stars/Devansh-Seth-DEV/SerDeLite?style=flat&logo=github&color=yellow", alt="Stars")
 </p>
 
-## ⚖️ License & Copyright
-Copyright (c) 2025 **Devansh Seth**.
-
-SerDeLite is licensed under the **GNU General Public License v3.0 (GPL-3.0)**. 
-This ensures the software remains free and open-source. If you use this library in your own project, your project must also be released under a compatible open-source license, and you must provide clear attribution to the original author.
-
----
-
-# SerDeLite 🚀
 
 **SerDeLite** is a lightweight, high-performance C++ serialization library designed for deterministic environments. It provides a unified framework for converting C++ objects into compact **Binary** formats and human-readable **JSON** with zero external dependencies.
+
+SerDeLite is engineered for developers who require absolute control over memory and performance. 
+
+
+## ✨ Key Features
+- **🚀 Zero Dynamic Allocation:** Designed for high-performance and embedded systems. SerDeLite operates entirely on pre-allocated buffers, meaning no new or malloc calls during serialization.
+  
+- **🔄 Dual-Protocol Support:** Seamlessly switch between compact Binary (for performance) and human-readable JSON (for debugging/config) using the same class structure.
+
+- **📦 Header-Only Friendly:** Minimal dependencies and a lightweight footprint, making it easy to integrate into existing C++11 (or newer) projects.
+
+- **🛠️ Simple Interface:** Turn any class into a serializable object by simply inheriting from JsonSerializable or ByteSerializable and implementing one or two methods.
+
+- **📏 Automatic Memory Management:** The ByteBuffer and JsonBuffer systems prevent buffer overflows and ensure memory safety during stream operations.
+
+- **🎨 Pretty Printing:** Built-in support for "Pretty JSON" formatting, making it easy to generate logs and configuration files that humans can actually read.
 
 ## 📥 Direct Downloads
 The latest stable binaries and header bundles are available for manual integration.
 
-* **[Download Latest Windows Release (v1.0.0)](https://github.com/Devansh-Seth-DEV/SerDeLite/releases/latest)**
+* **[Download Latest Release](https://github.com/Devansh-Seth-DEV/SerDeLite/releases/latest)**
     * *Includes: `libserdelite.a` (UCRT64/x64) and full `include/` directory.*
-
----
-
-<br>
-
-## 🌟 Core Value Proposition
-
-SerDeLite is engineered for developers who require absolute control over memory and performance. 
-
-* **Deterministic Memory (Zero-Allocation):** Operates entirely on user-provided buffers. By avoiding heap allocations during streaming, SerDeLite eliminates risks of memory fragmentation and `malloc` latency.
-* **Architectural Transparency:** Built-in endianness awareness ensures data integrity across different CPU architectures (Little-Endian vs. Big-Endian) without manual byte-swapping.
-* **Unified Interface:** A single object definition provides dual-format support. Use compact Binary for high-speed networking and JSON for configuration or debugging.
-
----
 
 
 ## 🛠️ Technical Specifications
@@ -50,9 +46,7 @@ SerDeLite provides native support for a wide range of primitive types, ensuring 
 | **Floating Point** | `float` (32-bit), `double` (64-bit) | `writeFloat`, `writeDouble` |
 | **Booleans** | `bool` (serialized as 1-byte) | `writeBool`, `readBool` |
 | **Strings** | UTF-8 / ASCII null-terminated | `writeString`, `readString` |
-| **Custom Objects** | Classes implementing `ByteSerializable` | `writeObject` |
-
----
+| **Custom Objects** | Classes implementing `ByteSerializable` or `JsonSerializable` | `writeObject` |
 
 
 ## 🔧 Architecture Overview
@@ -63,8 +57,6 @@ The library is divided into four distinct layers to ensure separation of concern
 3.  **Interface Layer (`Serializable`):** The contract used by custom classes to enable streaming.
 4.  **Presentation Layer (`JsonBuffer`):** Tools for visualizing data in human-readable formats.
 
----
-<br>
 
 ## 📦 Installation & Deployment
 
@@ -76,7 +68,7 @@ Pre-compiled binaries for Windows x64 are available for immediate use.
 3. **Link** the library using the following compiler flags:
    ```bash
    -L./bin -lserdelite
-
+    ```
 
 #### 💻 Full Compilation Example
 To compile a project using the pre-compiled SerDeLite library, use the following g++ command structure:
@@ -103,7 +95,7 @@ g++ -c -I./include src/serdelite/*.cpp
 ar rcs bin/libserdelite.a *.o
 ```
 
-<br>
+---
 
 ## 🚀 Getting Started
 
@@ -192,4 +184,3 @@ if (!success) printf("Failed to serialize player to Json!");
 else jStream.getJson().printPretty();
 
 ```
-
