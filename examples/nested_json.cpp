@@ -17,7 +17,8 @@ public:
     int32_t level;
     int32_t xp;
 
-    Stats(int32_t l = 1, int32_t x = 0) : level(l), xp(x) {}
+    Stats(int32_t _level = 1, int32_t _xp = 0)
+        : level(_level), xp(_xp) {}
 
 protected:
     bool serializeToJson(JsonStream& s) const override {
@@ -30,8 +31,9 @@ public:
     char name[32];
     Stats stats; // Nested Object
 
-    NPC(const char* n, int32_t l, int32_t x) : stats(l, x) {
-        snprintf(name, sizeof(name), "%s", n);
+    NPC(const char* _name, int32_t level, int32_t xp)
+        : stats(level, xp) {
+        snprintf(name, sizeof(name), "%s", _name);
     }
 
 protected:
@@ -48,9 +50,9 @@ int main() {
 
     NPC myNpc("Merchant", 15, 4500);
 
-    if (myNpc.toJson(jStream)) {
-        jStream.getJson().printPretty(2);
-    }
+    bool success = myNpc.toJson(jStream);
+    if (!success) printf("Failed to serialize NPC.\n");
+    else jStream.getJson().printPretty();
 
     return 0;
 }

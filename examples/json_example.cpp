@@ -36,16 +36,18 @@ int main() {
     Config myConfig(85, true);
 
     // Serialize
-    if (myConfig.toJson(jStream)) {
+    bool success = myConfig.toJson(jStream);
+    if (!success) printf("Failed to serialize Config object to Json!\n");
+    else {
         // Get the result and print
-        JsonBuffer result = jStream.getJson();
+        JsonBuffer jBuffer = jStream.getJson();
         
-        printf("Raw JSON:\n%.*s\n\n", (int)result.length, result.data);
+        printf("Raw JSON: %.*s\n\n",
+                (int)jBuffer.length,
+                jBuffer.data);
         
         printf("Pretty JSON:\n");
-        result.printPretty(4); // 4 spaces indent
-    } else {
-        printf("JSON Serialization failed!\n");
+        jBuffer.printPretty(); // 2 spaces indent (default)
     }
 
     return 0;

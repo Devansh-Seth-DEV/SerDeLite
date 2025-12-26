@@ -1,4 +1,4 @@
-![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![GitHub tag (latest by date)](https://img.shields.io/github/v/tag/Devansh-Seth-DEV/SerDeLite?label=version&color=blue)
 ![License](https://img.shields.io/badge/license-GPL--3.0-orange.svg)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg)
 ![Compiler](https://img.shields.io/badge/compiler-GCC%20%2F%20Clang-orange.svg)

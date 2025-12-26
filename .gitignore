@@ -3,8 +3,7 @@
 *.obj
 
 # Static Libraries
-bin/*.a
-bin/*.lib
+bin/
 
 # Executables
 *.exe

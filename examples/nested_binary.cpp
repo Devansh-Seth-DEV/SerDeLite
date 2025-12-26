@@ -20,14 +20,18 @@ public:
     uint16_t id;
     uint8_t quantity;
 
-    Item(uint16_t _id = 0, uint8_t _qty = 0) : id(_id), quantity(_qty) {}
+    Item(uint16_t _id = 0, uint8_t _qty = 0)
+        : id(_id), quantity(_qty) {}
 
     // 2 bytes (id) + 1 byte (qty) = 3 bytes total
-    size_t byteSize() const override { return sizeof(uint16_t) + sizeof(uint8_t); }
+    size_t byteSize() const override {
+        return sizeof(id) + sizeof(quantity);
+    }
 
     bool toByteStream(ByteStream& s) const override {
         return s.writeUint16(id) && s.writeUint8(quantity);
     }
+
     bool fromByteStream(ByteStream& s) override {
         return s.readUint16(id) && s.readUint8(quantity);
     }
@@ -40,10 +44,17 @@ public:
     Item slotA; // First nested object
     Item slotB; // Second nested object
 
-    Inventory(uint32_t _owner = 0) : ownerId(_owner) {}
+    Inventory(uint32_t _ownerId = 0): ownerId(_ownerId) {}
+
+    Inventory(uint32_t _owner,
+              Item _slotA,
+              Item _slotB)
+        : ownerId(_owner), slotA(_slotA), slotB(_slotB) {}
 
     size_t byteSize() const override {
-        return sizeof(uint32_t) + slotA.byteSize() + slotB.byteSize();
+        return sizeof(ownerId) +
+               slotA.byteSize() +
+               slotB.byteSize();
     }
 
     bool toByteStream(ByteStream& s) const override {
@@ -54,6 +65,7 @@ public:
     }
 
     bool fromByteStream(ByteStream& s) override {
+        // Read in same order in which they are written
         return s.readUint32(ownerId) && 
                s.readObject(slotA) && 
                s.readObject(slotB);
@@ -66,30 +78,44 @@ int main() {
     ByteStream stream(buffer);
 
     // Setup Nested Data
-    Inventory inv(500);         // Owner ID 500
-    inv.slotA = Item(10, 5);    // Item ID 10, Qty 5
-    inv.slotB = Item(20, 1);    // Item ID 20, Qty 1
+    Inventory inv(500,          // Owner ID 500
+                  Item(10, 5),  // Item ID 10, Qty 5
+                  Item(20, 1)); // Item ID 20, Qty 1
 
     // Serialize
     printf("Serializing Nested Inventory...\n");
     stream.writeLibraryHeader();
-    if (stream.writeObject(inv)) {
-        printf("[Success] Inventory serialized.\n");
-    }
+
+    bool success = stream.writeObject(inv);
+    if (!success) printf("Failed to serialize inventory.\n");
+    else printf("Inventory serialized.\n");
 
     buffer.dump();
 
-    // Verify by reading back into a new object
     stream.resetReadCursor();
 
-    if (stream.verifyLibraryHeader()) {
-        Inventory loadedInv;
-        if (stream.readObject(loadedInv)) {
-            printf("\n--- Loaded Data ---\n");
-            printf("Owner: %u\n", loadedInv.ownerId);
-            printf("Slot A: ID %u, Qty %u\n", loadedInv.slotA.id, loadedInv.slotA.quantity);
-            printf("Slot B: ID %u, Qty %u\n", loadedInv.slotB.id, loadedInv.slotB.quantity);
-        }
+    // early exit if not a verified SerDeLite stream
+    if (!stream.verifyLibraryHeader()) {
+        printf("Stream is not compatible.\n");
+        return 0;
+    }
+    
+    Inventory loadedInv;
+
+    success = stream.readObject(loadedInv);
+    if (!success)
+        printf("Failed to read inventory from stream.\n");
+    else {
+        printf("\n--- Loaded Data ---\n");
+        printf("Owner: %u\n", loadedInv.ownerId);
+        
+        printf("Slot A: ID %u, Qty %u\n",
+                loadedInv.slotA.id,
+                loadedInv.slotA.quantity);
+        
+        printf("Slot B: ID %u, Qty %u\n",
+                loadedInv.slotB.id,
+                loadedInv.slotB.quantity);
     }
 
     return 0;

@@ -34,27 +34,48 @@ void processIncomingData(ByteBuffer& buffer) {
     
     // LAYER 1: Library Verification
     if (!stream.verifyLibraryHeader()) {
-        printf("[Error] Header Mismatch, Not a valid SerDeLite packet!\n");
+        printf("Header Mismatch, Not a valid SerDeLite packet!\n");
         return;
     }
 
     // LAYER 2: Application Type Identification
     uint8_t type;
-    if (!stream.readUint8(type)) return;
+    bool success = stream.readUint8(type);
+    if (!success) {
+        printf("Failed to read the packet type.\n");
+        return;
+    } else printf("Recieved packet type: %u\n", type);
 
-    if (type == MSG_PLAYER_DATA) {
+    printf("Reading packet data...\n");
+
+    switch (type) {
+    case MSG_PLAYER_DATA: {
         PlayerData p;
-        if (stream.readObject(p)) {
-            printf("[Success] Received Player ID: %u\n", p.id);
+        success = stream.readObject(p);
+        if (!success) printf("Failed to read player data.\n");
+        else {
+            printf("Successfully read player's data.\n\n");
+            printf("Player:\n");
+            printf("id: %u\n", p.id);
         }
-    } else if (type == MSG_CHAT) {
+    }
+    break;
+
+    case MSG_CHAT: {
         char chatBuffer[64];
-        // SerDeLite's readString handles the length prefix automatically
-        if (stream.readString(chatBuffer, sizeof(chatBuffer))) {
-            printf("[Success] Received Chat Message: \"%s\"\n", chatBuffer);
+        success = stream.readString(chatBuffer,
+                                    sizeof(chatBuffer));
+        
+        if (!success) printf("Failed to read the chat message.\n");
+        else {
+            printf("Succesfully read chat message.\n\n");
+            printf("Message: \"%s\"\n", chatBuffer);
         }
-    } else {
-        printf("[Warning] Unknown Packet Type: %u\n", type);
+    }
+    break;
+
+    default:
+        printf("Unknown packet type.\n");
     }
 }
 
@@ -62,26 +83,28 @@ int main() {
     uint8_t mem[128];
     ByteBuffer buffer(mem, sizeof(mem));
     ByteStream stream(buffer);
-
-    // --- TEST 1: Sending Player Data ---
-    printf("--- SENDING PLAYER ---\n");
+    
+    // Serializing player
     stream.writeLibraryHeader();
     stream.writeUint8(MSG_PLAYER_DATA);
     PlayerData p1(42);
     stream.writeObject(p1);
-    buffer.dump();
+    buffer.dump();  // display the raw-memory state
+
+    // --- TEST 1: Sending Player Data ---
+    printf("\n--- SENDING PLAYER ---\n");
     stream.resetReadCursor();
     processIncomingData(buffer);
 
-    // --- TEST 2: Sending Chat (Clear and Re-use Buffer) ---
+    // Serializing chat message
     buffer.erase();
-    stream.resetReadCursor();
-
-    printf("\n--- SENDING CHAT ---\n");
     stream.writeLibraryHeader();
     stream.writeUint8(MSG_CHAT);
     stream.writeString("Hello World!");
-    buffer.dump();
+    buffer.dump();   // display the raw-memory state
+
+    // --- TEST 2: Sending Chat ---
+    printf("\n--- SENDING CHAT ---\n");
     stream.resetReadCursor();
     processIncomingData(buffer);
 

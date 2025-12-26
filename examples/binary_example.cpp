@@ -33,8 +33,10 @@ public:
 
     // This tells the library how many bytes this object needs
     size_t byteSize() const override {
-        // 4 (id) + 4 (float) + 2 (string length prefix) + actual string length
-        return sizeof(uint32_t) + sizeof(float) + sizeof(uint16_t) + strlen(name);
+        // 4 (id) + 4 (health) + 2 (string length prefix) + actual string length
+        return sizeof(id) +
+               sizeof(health) +
+               sizeof(uint16_t) + strlen(name);
     }
 
     bool toByteStream(ByteStream& stream) const override {
@@ -62,26 +64,28 @@ int main() {
     printf("Writing player data...\n");
     stream.writeLibraryHeader();
     
-    if (!stream.writeObject(p1)) {
-        printf("[Write Failed] Cannot write player p1 into bytestream\n");
-    } else {
-        printf("[Write Success] Player p1 data written into bytestream\n");
-    }
+    bool success = stream.writeObject(p1);
+    if (!success) printf("Failed to write player into stream\n");
+    else printf("Player written into stream\n");
 
     // Reset and Read
     stream.resetReadCursor();
     
-    if (stream.isSerdeliteBuffer()) {
-        if (stream.verifyLibraryHeader()) {
-            buffer.dump();
+    // early exit if not a verified SerDeLite stream
+    if (!stream.verifyLibraryHeader()) {
+        printf("Stream is not compatible\n");
+        return 0;
+    }
 
-            Player p2;
-            if (stream.readObject(p2)) {
-                printf("\n--- Loaded Data ---\n");
-                printf("ID: %u\nHealth: %.1f\nName: %s\n", 
-                       p2.id, p2.health, p2.name);
-            }
-        }
+    buffer.dump();
+
+    Player p2;
+    success = stream.readObject(p2);
+    if (!success) printf("Failed to read player from stream\n");
+    else {
+        printf("\n--- Loaded Data ---\n");
+        printf("ID: %u\nHealth: %.1f\nName: %s\n", 
+                p2.id, p2.health, p2.name);
     }
 
     return 0;
