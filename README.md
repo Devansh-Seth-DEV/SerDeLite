@@ -156,7 +156,7 @@ if (!success) printf("Failed to serialize Player!\n");
 ### 3. Binary Deserialization
 ```cpp
 // Reset the read cursor first
-stream.resetReadCusror();
+stream.resetReadCursor();
 
 if (stream.verifyLibraryHeader()) {
    buffer.dump();
