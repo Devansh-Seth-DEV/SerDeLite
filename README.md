@@ -104,6 +104,7 @@ Inherit from `ByteSerializable` and `JsonSerializable` to enable dual-format sup
 
 ```cpp
 #include <serdelite.h>
+using namespace serdelite;
 
 class Player : public ByteSerializable,
                public JsonSerializable {
@@ -111,7 +112,7 @@ public:
     uint32_t id;
     float health;
 
-    Player(uint32_t _id, float _health)
+    Player(uint32_t _id=0, float _health=0)
       : id(_id), health(_health) {}
 
     // Binary logic
@@ -175,12 +176,11 @@ if (stream.verifyLibraryHeader()) {
 
 ### 3. JSON Export & Visualization
 ```cpp
-uint8_t mem[128];
-ByteBuffer buffer(mem, sizeof(mem));
+// using the same buffer to write json
+buffer.erase(); // delete all data from buffer
 JsonStream jStream(buffer);
 
-bool success = p.toJson(jStream);
+success = p.toJson(jStream);
 if (!success) printf("Failed to serialize player to Json!");
 else jStream.getJson().printPretty();
-
 ```
