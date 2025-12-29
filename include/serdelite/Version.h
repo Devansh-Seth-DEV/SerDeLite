@@ -20,7 +20,7 @@
 #define SERDELITE_VERSION_MAJOR 1
 
 /** @brief Minor version number. Incremented for backward-compatible functionality. */
-#define SERDELITE_VERSION_MINOR 0
+#define SERDELITE_VERSION_MINOR 1
 
 /** @brief Patch version number. Incremented for backward-compatible bug fixes. */
 #define SERDELITE_VERSION_PATCH 0
