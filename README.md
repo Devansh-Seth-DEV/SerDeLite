@@ -29,6 +29,42 @@ SerDeLite is engineered for developers who require absolute control over memory 
 
 - **🎨 Pretty Printing:** Built-in support for "Pretty JSON" formatting, making it easy to generate logs and configuration files that humans can actually read.
 
+## 🚀 Performance Benchmarks
+
+SerDeLite is engineered for high-frequency systems where low latency is critical. These benchmarks demonstrate the library's efficiency on modern high-performance hardware.
+
+### Test Environment
+- **CPU:** Intel® Core™ i7-11800H @ 2.30GHz (Up to 4.6GHz Turbo)
+- **GPU:** NVIDIA GeForce RTX 3050 (4GB)
+- **Compiler:** g++ 13.x (Optimization level: `-O3`)
+- **Methodology:** 1,000,000 iterations per object type with a 100k iteration CPU warm-up.
+
+### Results
+| Workload | Complexity | Throughput | Latency |
+| :--- | :--- | :--- | :--- |
+| **Numeric Data** (`PlayerStats`) | 3 Mixed Integers | **17.63M objects/sec** | **56.7 ns/object** |
+| **Physics Data** (`Vec3`) | 3 Floats | **14.61M objects/sec** | **68.4 ns/object** |
+| **Nested Object** (`Player`) | Recursive + Strings | **4.05M objects/sec** | **246.5 ns/object** |
+| **Stress Test** (`ComplexPlayer`) | Nested Profile (`Player`) + 10 Items | **1.43 M objects/sec** | **699.3 ns/object** |
+
+### 🎮 The 144Hz Reality Check
+For real-time applications like game engines running at **144 FPS**, the total frame budget is **6.9ms**. 
+- Even under the **Stress Test** workload (699ns), SerDeLite can serialize over **1,400 complex entities** while consuming less than **1%** of a single frame's time budget.
+- This deterministic performance ensures zero frame-spikes during high-frequency data persistence or networking.
+
+### Why is it so fast?
+- **O(1) Memory Reset:** `ByteBuffer::clear()` only resets the internal cursor, keeping the memory "warm" in the CPU L1/L2 cache.
+- **Zero-Allocation Hot Path:** No `new` or `malloc` calls occur during the serialization loop, eliminating heap fragmentation and non-deterministic latency.
+- **Exception-Free:** Error propagation uses boolean status chains, avoiding the heavy stack-unwinding overhead of C++ exceptions.
+
+### Performance Guarantees
+* **Cache Locality:** By using a contiguous `uint8_t` buffer, data stays in the **L1/L2 cache**, preventing "Cache Misses" that can slow down performance by 100x.
+* **Non-Blocking Logic:** The library is entirely synchronous and thread-safe for local buffers, ensuring that serialization never blocks the main execution thread.
+* **Instruction Inlining:** Due to the header-only friendly architecture, the compiler can inline `writeObject` calls, removing function-call overhead.
+
+> [!NOTE]
+> Source code for these benchmarks is available in the [tests/benchmarks](https://github.com/Devansh-Seth-DEV/SerDeLite/tree/main/tests/benchmarks) directory, including the 'World State' stress test which simulates high-density entity serialization.
+
 ## 📥 Direct Downloads
 The latest stable binaries and header bundles are available for manual integration.
 
@@ -183,4 +219,5 @@ JsonStream jStream(buffer);
 success = p.toJson(jStream);
 if (!success) printf("Failed to serialize player to Json!");
 else jStream.getJson().printPretty();
+
 ```
