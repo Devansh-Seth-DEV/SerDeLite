@@ -4,6 +4,8 @@
 
 <p align="center">
   <img src="https://img.shields.io/github/v/tag/Devansh-Seth-DEV/SerDeLite?label=version&color=blue" alt="Version">
+  <img src="https://img.shields.io/badge/Performance-17.6M%20ops%2Fsec-brightgreen?style=flat&logo=speedtest&logoColor=white" alt="Performance">
+  <img src="https://img.shields.io/badge/Latency-56ns-blue?style=flat&logo=clockify&logoColor=white" alt="Latency">
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg" alt="Platform">
   <img src="https://img.shields.io/badge/license-GPL--3.0-orange.svg" alt="License">
   <img src="https://img.shields.io/github/downloads/Devansh-Seth-DEV/SerDeLite/total?color=brightgreen&logo=github" alt="Downloads">
