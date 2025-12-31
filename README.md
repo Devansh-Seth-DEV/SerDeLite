@@ -3,7 +3,7 @@
 </h1>
 
 <p align="center">
-  <img src="https://img.shields.io/github/v/tag/Devansh-Seth-DEV/SerDeLite?label=version&color=blue" alt="Version">
+  <img src="https://img.shields.io/github/v/tag/Devansh-Seth-DEV/SerDeLite?sort=semver&label=version&color=blue" alt="Version">
   <img src="https://img.shields.io/badge/Performance-17.6M%20ops%2Fsec-brightgreen?style=flat&logo=speedtest&logoColor=white" alt="Performance">
   <img src="https://img.shields.io/badge/Latency-56ns-blue?style=flat&logo=clockify&logoColor=white" alt="Latency">
   <img src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-lightgrey.svg" alt="Platform">
@@ -221,5 +221,6 @@ JsonStream jStream(buffer);
 success = p.toJson(jStream);
 if (!success) printf("Failed to serialize player to Json!");
 else jStream.getJson().printPretty();
+
 
 ```
