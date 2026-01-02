@@ -49,11 +49,6 @@ SerDeLite is engineered for high-frequency systems where low latency is critical
 | **Nested Object** (`Player`) | Recursive + Strings | **4.05M objects/sec** | **246.5 ns/object** |
 | **Stress Test** (`ComplexPlayer`) | Nested Profile (`Player`) + 10 Items | **1.43 M objects/sec** | **699.3 ns/object** |
 
-### 🎮 The 144Hz Reality Check
-For real-time applications like game engines running at **144 FPS**, the total frame budget is **6.9ms**. 
-- Even under the **Stress Test** workload (699ns), SerDeLite can serialize over **1,400 complex entities** while consuming less than **1%** of a single frame's time budget.
-- This deterministic performance ensures zero frame-spikes during high-frequency data persistence or networking.
-
 ### Why is it so fast?
 - **O(1) Memory Reset:** `ByteBuffer::clear()` only resets the internal cursor, keeping the memory "warm" in the CPU L1/L2 cache.
 - **Zero-Allocation Hot Path:** No `new` or `malloc` calls occur during the serialization loop, eliminating heap fragmentation and non-deterministic latency.
@@ -224,4 +219,5 @@ else jStream.getJson().printPretty();
 
 
 ```
+
 
